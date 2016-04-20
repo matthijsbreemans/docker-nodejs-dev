@@ -1,4 +1,4 @@
-FROM mikewright/docker-dev-base:latest
+FROM mikewright/docker-dev-base:alpine
 
 MAINTAINER Mike Wright <mkwright@gmail.com>
 
