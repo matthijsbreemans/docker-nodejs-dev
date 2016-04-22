@@ -15,18 +15,18 @@ ENV NODE_PATH=/usr/lib/node_modules/
 ENV NODE_HOME $HOME/node
 RUN curl -sSL https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz -o $HOME/node.tar.gz && \
     mkdir -p $HOME/node && \
-    cd $HOME && sudo tar -C /usr/local --strip-components 1 -xzf node.tar.gz && \
+    cd $HOME && tar -C $HOME/node --strip-components 1 -xzf node.tar.gz && \
     rm -f $HOME/node.*
 
-ENV PATH $PATH:$HOME/node
+ENV PATH $PATH:$HOME/node/bin
 
 ENV NPM_VERSION=3.7.5
 ENV npm_install=$NPM_VERSION
 RUN curl -L https://npmjs.org/install.sh | sudo sh && \
-    mkdir -p $(npm config get prefix)/lib/node_modules && \
-    sudo chown -R docker-user $(npm config get prefix)/lib/node_modules && \
-    sudo chown -R docker-user $(npm config get prefix)/bin && \
-    sudo chown -R docker-user $(npm config get prefix)/share
+    mkdir -p $HOME/.npm-user && \
+    npm config set prefix '~/.npm-user' 
+
+ENV PATH $HOME/.npm-user/bin:$PATH
 
 # Install vim plugins for node
 ADD vimrc.bundles.local $HOME/.vimrc.bundles.local
